@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, NavLink } from "react-router-dom";
 import EditEmployee from "../EditEmployee/EditEmployee";
+import index from "../../index"
 
+  
 function HomePage() {
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate(); // Move the useNavigate hook outside of the HandleUpdateEmployee function
@@ -31,6 +33,7 @@ function HomePage() {
 
   const HandleUpdateEmployee = (employee) => {
     console.log(employee);
+    handleEditEmployeeClick(); // Call the handleEditEmployeeClick function
     navigate("/edit-employee", { state: { employee } });
     setActiveLink("/edit-employee"); // Add this line to set "Edit Employee" as the active link
   };
