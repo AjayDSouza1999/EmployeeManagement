@@ -108,7 +108,7 @@ function EditEmployee(props) {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     // Check if any field is blank
     if (
       !employee.employeeId ||
@@ -132,7 +132,7 @@ function EditEmployee(props) {
       window.alert("Employee ID should contain only numbers.");
       return; // Stop further execution
     }
-  
+
     fetch("http://localhost:8000/user/create", {
       method: "POST",
       headers: {
@@ -144,7 +144,7 @@ function EditEmployee(props) {
       .then((data) => {
         console.log("Form submitted successfully:", data);
         // Add your logic for handling the API response here
-  
+
         // Reset the form fields to blank
         setEmployee({
           employeeId: "",
@@ -155,16 +155,15 @@ function EditEmployee(props) {
           emailId: "",
           address: "",
         });
-  
+
         // Show success message
         window.alert(`Employee ID ${data.employeeId} saved successfully.`);
-  
+
         // Navigate to homepage
         window.location = "/homepage";
       })
       .catch((error) => console.log("Error submitting form:", error));
   };
-  
 
   const handleSearch = () => {
     fetch("http://localhost:8000/user/get/" + employee.employeeId)
@@ -217,13 +216,13 @@ function EditEmployee(props) {
             alignItems: "center",
           }}
         >
-          <style>
+          {/* <style>
             {`
         button {
           margin-right: 115px;
         }
         `}
-          </style>
+          </style> */}
 
           <form onSubmit={handleSubmit}>
             <div className="mb-3 custom-input-space">
@@ -241,8 +240,6 @@ function EditEmployee(props) {
                 value={employee.employeeId}
                 onChange={handleChange}
                 className="form-control"
-                //pattern="[0-9]+" 
-                //style={{ color: "white" }}
               />
             </div>
             <div className="mb-3 custom-input-space">
@@ -302,7 +299,6 @@ function EditEmployee(props) {
                 <option value="mechanical">Mechanical</option>
               </select>
             </div>
-
             <div className="mb-3 custom-input-space">
               <label
                 htmlFor="mobileNo"
@@ -354,71 +350,78 @@ function EditEmployee(props) {
                 className="form-control"
               />
             </div>
-            <div style={{ display: "flex" }}>
-              <button
-                type="submit"
-                className="btn btn-primary"
-                style={{
-                  color: "black",
-                  backgroundColor: "rgb(152, 200, 216)",
-                  marginLeft: "0px",
-                }}
+                 
+            <div className="mb-3 custom-input-space">
+              <div
+                className="mb-3"
+                style={{ display: "flex", justifyContent: "space-evenly" }}
               >
-                Save
-              </button>
-              <button
-                type="button"
-                onClick={handleClear}
-                className="btn btn-primary"
-                style={{
-                  backgroundColor: "rgb(152, 200, 216)",
-                  color: "black",
-                  marginLeft: "-35px",
-                }}
-              >
-                Clear
-              </button>
-              <button
-                type="button"
-                onClick={handleDelete}
-                className="btn btn-primary"
-                style={{
-                  backgroundColor: "rgb(152, 200, 216)",
-                  color: "black",
-                  marginLeft: "-35px",
-                }}
-              >
-                Delete
-              </button>
-              <button
-                type="button"
-                onClick={handleUpdate}
-                className="btn btn-primary"
-                style={{
-                  backgroundColor: "rgb(152, 200, 216)",
-                  color: "black",
-                  marginLeft: "-35px",
-                }}
-              >
-                Update
-              </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary"
+                  style={{
+                    color: "black",
+                    backgroundColor: "rgb(152, 200, 216)",
+                    //marginLeft: "0px",
+                  }}
+                >
+                  Save
+                </button>
+                <button
+                  type="button"
+                  onClick={handleClear}
+                  className="btn btn-primary"
+                  style={{
+                    backgroundColor: "rgb(152, 200, 216)",
+                    color: "black",
+                    // marginLeft: "-35px",
+                  }}
+                >
+                  Clear
+                </button>
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  className="btn btn-primary"
+                  style={{
+                    backgroundColor: "rgb(152, 200, 216)",
+                    color: "black",
+                    //marginLeft: "-35px",
+                  }}
+                >
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  onClick={handleUpdate}
+                  className="btn btn-primary"
+                  style={{
+                    backgroundColor: "rgb(152, 200, 216)",
+                    color: "black",
+                    //marginLeft: "-35px",
+                  }}
+                >
+                  Update
+                </button>
 
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={handleSearch}
-                style={{
-                  backgroundColor: "rgb(152, 200, 216)",
-                  color: "black",
-                  marginLeft: "-35px",
-                }}
-              >
-                Search
-              </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleSearch}
+                  style={{
+                    backgroundColor: "rgb(152, 200, 216)",
+                    color: "black",
+                    //marginLeft: "-35px",
+                  }}
+                >
+                  Search
+                </button>
+              </div>
             </div>
           </form>
         </div>
       </div>
+
       <br></br>
     </div>
   );

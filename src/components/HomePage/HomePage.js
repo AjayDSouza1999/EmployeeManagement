@@ -33,7 +33,7 @@ function HomePage() {
 
   const HandleUpdateEmployee = (employee) => {
     console.log(employee);
-    handleEditEmployeeClick(); // Call the handleEditEmployeeClick function
+    //handleEditEmployeeClick(); // Call the handleEditEmployeeClick function
     navigate("/edit-employee", { state: { employee } });
     setActiveLink("/edit-employee"); // Add this line to set "Edit Employee" as the active link
   };
@@ -71,7 +71,7 @@ function HomePage() {
       }}
     >
       <h1 style={{ textAlign: "center" }}>Employee Details</h1>
-      <br />
+      <br/>
 
       <table
         className="table table-striped"
