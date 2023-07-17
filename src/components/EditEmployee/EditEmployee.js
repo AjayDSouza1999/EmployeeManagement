@@ -133,36 +133,66 @@ function EditEmployee(props) {
       return; // Stop further execution
     }
 
-    fetch("http://localhost:8000/user/create", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(employee),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Form submitted successfully:", data);
-        // Add your logic for handling the API response here
+  //   fetch("http://localhost:8000/user/create", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify(employee),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("Form submitted successfully:", data);
+  //       // Add your logic for handling the API response here
 
-        // Reset the form fields to blank
-        setEmployee({
-          employeeId: "",
-          firstName: "",
-          lastName: "",
-          department: "",
-          mobileNo: "",
-          emailId: "",
-          address: "",
-        });
+       
 
-        // Show success message
-        window.alert(`Employee ID ${data.employeeId} saved successfully.`);
+  //       // Show success message
+  //       window.alert(`Employee ID ${employee.employeeId} saved successfully.`);
 
-        // Navigate to homepage
-        window.location = "/homepage";
-      })
-      .catch((error) => console.log("Error submitting form:", error));
+  //       // Navigate to homepage
+  //       window.location = "/homepage";
+  //     })
+  //     .catch((error) => console.log("Error submitting form:", error));
+  //      // Reset the form fields to blank
+  //     //  setEmployee({
+  //     //   employeeId: "",
+  //     //   firstName: "",
+  //     //   lastName: "",
+  //     //   department: "",
+  //     //   mobileNo: "",
+  //     //   emailId: "",
+  //     //   address: "",
+  //     // });
+  // };
+  fetch("http://localhost:8000/user/create", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(employee),
+})
+  .then((response) => response.json())
+  .then((data) => {
+    if (data.status) {
+      // Employee saved successfully
+      window.alert(`Employee ID ${employee.employeeId} saved successfully.`);
+      // Reset the form fields to blank
+      setEmployee({
+        employeeId: "",
+        firstName: "",
+        lastName: "",
+        department: "",
+        mobileNo: "",
+        emailId: "",
+        address: "",
+      });
+    } else {
+      // Error occurred during saving
+      window.alert(data.message);
+    }
+  })
+  .catch((error) => console.log("Error submitting form:", error));
   };
 
   const handleSearch = () => {
@@ -216,13 +246,7 @@ function EditEmployee(props) {
             alignItems: "center",
           }}
         >
-          {/* <style>
-            {`
-        button {
-          margin-right: 115px;
-        }
-        `}
-          </style> */}
+
 
           <form onSubmit={handleSubmit}>
             <div className="mb-3 custom-input-space">
@@ -350,7 +374,7 @@ function EditEmployee(props) {
                 className="form-control"
               />
             </div>
-                 
+            
             <div className="mb-3 custom-input-space">
               <div
                 className="mb-3"
