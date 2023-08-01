@@ -5,3 +5,9 @@
   background-color: rgb(152, 200, 216);
 
 }
+
+.active {
+  /* Your custom styles for the active link */
+  font-weight: bold;
+  /* Add any other styles you want for the active link */
+}

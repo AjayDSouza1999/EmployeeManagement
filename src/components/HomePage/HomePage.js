@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation, NavLink } from "react-router-dom";
-import EditEmployee from "../EditEmployee/EditEmployee";
-import index from "../../index"
+import { useNavigate, useLocation } from "react-router-dom";
 
   
-function HomePage() {
+function HomePage({ handleEditEmployeeClick }) {
+  console.log("In homepage");
   const [employees, setEmployees] = useState([]);
   const navigate = useNavigate(); // Move the useNavigate hook outside of the HandleUpdateEmployee function
   const location = useLocation(); // Add this line
@@ -33,14 +32,9 @@ function HomePage() {
 
   const HandleUpdateEmployee = (employee) => {
     console.log(employee);
-    //handleEditEmployeeClick(); // Call the handleEditEmployeeClick function
+    handleEditEmployeeClick(); // Call the handleEditEmployeeClick function
     navigate("/edit-employee", { state: { employee } });
     setActiveLink("/edit-employee"); // Add this line to set "Edit Employee" as the active link
-  };
-
-  // Pass the selected employee as a prop to the EditEmployee component
-  {
-    /* <EditEmployee employee={employees} /> */
   }
 
   useEffect(() => {

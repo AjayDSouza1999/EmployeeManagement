@@ -3,9 +3,17 @@ import { useLocation } from "react-router-dom"; // Import the useLocation hook
 import React, { useState, useEffect } from "react";
 import "./EditEmployee.css";
 
-function EditEmployee(props) {
-  // const [employee, setEmployee] = useState(props.employee);
-  const [employee, setEmployee] = useState({}); // Initialize with an empty object
+function EditEmployee() {
+  const [employee, setEmployee] = useState({
+    employeeId: "",
+    firstName: "",
+    lastName: "",
+    department: "",
+    mobileNo: "",
+    emailId: "",
+    address: "",
+  });
+  
 
   const location = useLocation(); // Add this line to get the location object
 
@@ -15,7 +23,8 @@ function EditEmployee(props) {
     //console.log("hello", JSON.stringify(employeeData, null, 2));
     if (employeeData) {
       setEmployee(employeeData);
-      console.log(employeeData);
+      //setEmployeeId(employeeData.employeeId); // Add this line to set the employeeId in the state
+      //console.log(employeeData);
     }
   }, [location.state?.employee]);
 
@@ -23,9 +32,36 @@ function EditEmployee(props) {
     const { name, value } = e.target;
     setEmployee((prevEmployee) => ({
       ...prevEmployee,
-      [name]: value,
+      [name]: name === "employeeId" ? parseInt(value) : value,
     }));
   };
+
+  // const handleAddEmployee = () => {
+  //   // Perform any validation or data processing you need
+  //   // ...
+
+  //   // Add the new employee with the auto-generated Employee ID
+  //   setEmployee((prevEmployees) => [
+  //     ...prevEmployees,
+  //     {
+  //       ...employee,
+  //       employeeId: employeeId,
+  //     },
+  //   ]);
+
+  //   // Increment the employeeId for the next employee
+  //   setEmployeeId((prevId) => prevId + 1);
+
+  //   // Clear the input fields for the next employee
+  //   setEmployee({
+  //     firstName: "",
+  //     lastName: "",
+  //     department: "",
+  //     mobileNo: "",
+  //     emailId: "",
+  //     address: "",
+  //   });
+  // };
 
   const handleClear = () => {
     setEmployee({
@@ -80,6 +116,10 @@ function EditEmployee(props) {
       .catch((error) => console.log("Error searching employee:", error));
   };
 
+  const handleExit = () => {
+    window.location = "/homepage";
+  };
+
   const handleDelete = () => {
     fetch(`http://localhost:8000/user/get/${employee.employeeId}`)
       .then((response) => response.json())
@@ -106,12 +146,12 @@ function EditEmployee(props) {
       })
       .catch((error) => console.log("Error searching employee:", error));
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     // Check if any field is blank
     if (
-      !employee.employeeId ||
       !employee.firstName ||
       !employee.lastName ||
       !employee.department ||
@@ -127,81 +167,53 @@ function EditEmployee(props) {
       return; // Stop further execution
     }
     // Validate employeeId field to allow only numbers
-    const employeeIdPattern = /^[0-9]+$/;
-    if (!employeeIdPattern.test(employee.employeeId)) {
-      window.alert("Employee ID should contain only numbers.");
-      return; // Stop further execution
-    }
+    // const employeeIdPattern = /^[0-9]+$/;
+    // if (!employeeIdPattern.test(employee.employeeId)) {
+    //   window.alert("Employee ID should contain only numbers.");
+    //   return; // Stop further execution
+    // }
 
-  //   fetch("http://localhost:8000/user/create", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(employee),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log("Form submitted successfully:", data);
-  //       // Add your logic for handling the API response here
-
-       
-
-  //       // Show success message
-  //       window.alert(`Employee ID ${employee.employeeId} saved successfully.`);
-
-  //       // Navigate to homepage
-  //       window.location = "/homepage";
-  //     })
-  //     .catch((error) => console.log("Error submitting form:", error));
-  //      // Reset the form fields to blank
-  //     //  setEmployee({
-  //     //   employeeId: "",
-  //     //   firstName: "",
-  //     //   lastName: "",
-  //     //   department: "",
-  //     //   mobileNo: "",
-  //     //   emailId: "",
-  //     //   address: "",
-  //     // });
-  // };
-  fetch("http://localhost:8000/user/create", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(employee),
-})
-  .then((response) => response.json())
-  .then((data) => {
-    if (data.status) {
-      // Employee saved successfully
-      window.alert(`Employee ID ${employee.employeeId} saved successfully.`);
-      // Reset the form fields to blank
-      setEmployee({
-        employeeId: "",
-        firstName: "",
-        lastName: "",
-        department: "",
-        mobileNo: "",
-        emailId: "",
-        address: "",
-      });
-    } else {
-      // Error occurred during saving
-      window.alert(data.message);
-    }
-  })
-  .catch((error) => console.log("Error submitting form:", error));
+    fetch("http://localhost:8000/user/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(employee),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status) {
+          // Employee saved successfully
+          window.alert(
+            `Employee ID ${employee.employeeId} saved successfully.`
+          );
+          //setEmployeeId((prevId) => prevId + 1);
+          // Reset the form fields to blank
+          setEmployee({
+            employeeId: "",
+            firstName: "",
+            lastName: "",
+            department: "",
+            mobileNo: "",
+            emailId: "",
+            address: "",
+          });
+          window.location = "/homepage";
+        } else {
+          // Error occurred during saving
+          window.alert(data.message);
+        }
+      })
+      .catch((error) => console.log("Error submitting form:", error));
   };
 
-  const handleSearch = () => {
+  const handleSearch_withoutInt = () => {
     fetch("http://localhost:8000/user/get/" + employee.employeeId)
       .then((response) => response.json())
       .then((data) => {
         if (data.status) {
           const {
-            employeeId,
+            //employeeId,
             firstName,
             department,
             mobileNo,
@@ -210,7 +222,7 @@ function EditEmployee(props) {
           } = data.data;
           setEmployee({
             ...employee,
-            employeeId,
+            //employeeId,
             firstName,
             department,
             mobileNo,
@@ -223,10 +235,40 @@ function EditEmployee(props) {
       })
       .catch((error) => console.log("Error searching employee:", error));
   };
+  const handleSearch = () => {
+    fetch("http://localhost:8000/user/get/" + employee.employeeId)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status) {
+          const {
+            //employeeId,
+            firstName,
+            department,
+            mobileNo,
+            emailId,
+            address,
+          } = data.data;
+          setEmployee({
+            ...employee,
+            //employeeId,
+            firstName,
+            department,
+            mobileNo,
+            emailId,
+            address,
+            employeeId: parseInt(data.data.employeeId), // Parse the employeeId to an integer
+          });
+        } else {
+          window.alert("Employee not found");
+        }
+      })
+      .catch((error) => console.log("Error searching employee:", error));
+  };
 
   return (
     <div>
       <h1 style={{ textAlign: "center" }}>Edit Employee</h1>
+      <br></br>
       <div
         style={{
           backgroundColor: "black",
@@ -246,8 +288,6 @@ function EditEmployee(props) {
             alignItems: "center",
           }}
         >
-
-
           <form onSubmit={handleSubmit}>
             <div className="mb-3 custom-input-space">
               <label
@@ -255,10 +295,10 @@ function EditEmployee(props) {
                 className="form-label"
                 style={{ color: "white" }}
               >
-                Employee ID :
+                Employee ID:
               </label>
               <input
-                type="text"
+                type="number" // Change the type to "number" to accept only numbers
                 id="employeeId"
                 name="employeeId"
                 value={employee.employeeId}
@@ -266,6 +306,7 @@ function EditEmployee(props) {
                 className="form-control"
               />
             </div>
+
             <div className="mb-3 custom-input-space">
               <label
                 htmlFor="firstName"
@@ -374,7 +415,7 @@ function EditEmployee(props) {
                 className="form-control"
               />
             </div>
-            
+
             <div className="mb-3 custom-input-space">
               <div
                 className="mb-3"
@@ -439,6 +480,19 @@ function EditEmployee(props) {
                   }}
                 >
                   Search
+                </button>
+
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  onClick={handleExit}
+                  style={{
+                    backgroundColor: "rgb(152, 200, 216)",
+                    color: "black",
+                    //marginLeft: "-35px",
+                  }}
+                >
+                  Exit
                 </button>
               </div>
             </div>

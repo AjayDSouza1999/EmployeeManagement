@@ -1,15 +1,8 @@
-/* eslint-disable no-restricted-globals */
-import React, { useState } from "react";
+
+import React, { useState, useEffect } from "react";
 import { createRoot } from "react-dom/client";
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Link,
-  useHistory,
-  NavLink,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, NavLink, useLocation, useNavigate } from "react-router-dom";
+
 import EditEmployee from "./components/EditEmployee/EditEmployee";
 import "bootstrap/dist/css/bootstrap.css";
 import HomePage from "./components/HomePage/HomePage";
@@ -18,16 +11,22 @@ import "./index.css";
 function App() {
   const [activeLink, setActiveLink] = useState("");
 
-  //console.log(location.pathname);
+
 
   const handleEditEmployeeClick = () => {
-    console.log("The value of handleEditEmployee " + location.pathname);
+    console.log("Inside handleEditEmployeeClick  ")
+
     setActiveLink("/edit-employee");
   };
 
   const handleHomePageClick = () => {
-    console.log("The value of handleHomePage " + location.pathname);
-    setActiveLink("/home");
+    console.log("Inside handleHomePageClick  ")
+    setActiveLink("/homepage");
+  };
+
+  // Function to determine if the "Edit Employee" link should be active
+  const activeEditEmployeeLink = () => {
+    return activeLink === "/edit-employee";
   };
 
   return (
@@ -39,35 +38,33 @@ function App() {
         >
           Employee Management
         </h1>
-
         <NavLink
-          to="/"
-          className={`button${location.pathname === "/" ? " active" : ""}`}
+          
+          to="/homepage"
+          activeclassname="active" // Use "active" class for styling when the link is active
+          className={`button${activeLink === "/homepage" ? " active" : ""}`}
           style={{
             marginRight: "10px",
             textDecoration: "none",
             color: "black",
-            fontWeight:
-              location.pathname === "/" &&
-              location.pathname !== "/edit-employee"
-                ? "bold"
-                : "normal",
+      
           }}
           onClick={handleHomePageClick}
         >
           Homepage
         </NavLink>
+
         <NavLink
           to="/edit-employee"
+          activeclassname="active" // Use "active" class for styling when the link is active
           className={`button${
-            location.pathname === "/edit-employee" ? " active" : ""
+            activeLink === "/edit-employee" ? " active" : ""
           }`}
           style={{
             marginRight: "70px",
             textDecoration: "none",
             color: "black",
-            fontWeight:
-              location.pathname === "/edit-employee" ? "bold" : "normal",
+          
           }}
           onClick={handleEditEmployeeClick}
         >
@@ -76,11 +73,29 @@ function App() {
       </div>
 
       <br></br>
+
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="*" element={<HomePage />} />
-        <Route path="/" element={<HomePage handleEditEmployeeClick={handleEditEmployeeClick} />} />
-        <Route path="/edit-employee" element={<EditEmployee />} />
+     
+        {/* <Route
+          path="/"
+          element={
+            <HomePage handleEditEmployeeClick={handleEditEmployeeClick} />
+          }
+        /> */}
+        <Route
+          path="/homepage"
+          element={
+            <HomePage handleEditEmployeeClick={handleEditEmployeeClick} />
+          }
+        />
+        <Route
+          path="/edit-employee"
+          element={<EditEmployee handleHomePageClick={handleHomePageClick} />}
+        />
+         <Route
+          path="*" // This route will match any unknown paths
+          element={<HomePage handleEditEmployeeClick={handleEditEmployeeClick} />}
+        />
       </Routes>
     </BrowserRouter>
   );
